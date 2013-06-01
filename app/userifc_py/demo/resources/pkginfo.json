@@ -1,0 +1,36 @@
+{
+    "name": "userifc_py.demo",
+    "version": "0.1.0",
+    "description": "Main app sub-package for Python User interface examples project.",
+    "long_description_content_type": "text/x-rst",
+    "url": "https://bitbucket.org/thebridge0491/userifc_py",
+    "author": "thebridge0491",
+    "author_email": "thebridge0491-codelab@yahoo.com",
+    "maintainer": "",
+    "maintainer_email": "",
+    "license": "Apache-2.0",
+    "download_url": "https://bitbucket.org/thebridge0491/userifc_py/archive/master.zip",
+    "keywords": ["demo", "development", "demo"],
+    "platforms": ["any"],
+    "setup_requires": ["wheel", "future"
+    ],
+    "tests_require": [
+    ],
+    "install_requires": ["future", "intro-py.util"
+    ],
+    "extras_require": {
+        ":python_version=='2.6'": ["argparse"],
+        "test": [],
+        "dev": ["check-manifest>=0.12.0"]
+    },
+    "zip_safe": true,
+    "include_package_data": true,
+    "scripts": [
+    ],
+    "entry_points": {
+        "console_scripts": [
+            "userifc_py = userifc_py.demo.cli:main",
+            "main = userifc_py.demo.cli:main"
+        ]
+    }
+}
