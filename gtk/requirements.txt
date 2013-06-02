@@ -1,0 +1,7 @@
+future
+wheel
+#pytest
+#pytest-timeout
+#pytest-runner
+#nose2
+-r requirements-internal.txt

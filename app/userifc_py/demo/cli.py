@@ -62,6 +62,22 @@ def run_demo(name, rsrc_path=None):
     greet_str = demo.greeting('greet.txt', name, rsrc_path=rsrc_path)
     print('{0}\n{1}'.format(datetime.now().strftime('%c'), greet_str))
 
+def run_demo_gtk(name, rsrc_path=None):
+    import re
+    from datetime import datetime
+
+    rexp = re.compile('(^quit$)', re.I)
+    #os.environ['GTK_MAJOR_VERSION'] = 'LATEST'
+    from userifc_py.gtk import hello_controller
+
+    pretext = '{0}\n{1} match: {2} to {3}\n{4}\n'.format(
+      hello_controller.userifc_version(), 'Good' if rexp.match(name)
+      else 'Does not', name, rexp.pattern, datetime.now().strftime('%c'))
+    uicontroller = hello_controller.HelloController('greet.txt', __name__)
+    #uicontroller.view1.widgets['textview1'].props.buffer.props.text = pretext
+    uicontroller.view1.widgets['textview1'].get_buffer().set_text(pretext)
+    hello_controller.Gtk.main()
+
 def parse_cmdopts(args=None):
     func_name = inspect.stack()[0][3]
     MODULE_LOGGER.info(func_name + '()')
@@ -77,7 +93,7 @@ def parse_cmdopts(args=None):
     opts_parser.add_argument('-u', '--user', action = 'store', type = str,
         default = 'World', help = 'set name')
     opts_parser.add_argument('-i', '--ifc', action = 'store', type = str,
-        default = None, choices = [None, 'term'],
+        default = None, choices = [None, 'term', 'gtk'],
         dest = 'ifc', help = 'Set user interface')
 
     return opts_parser.parse_args(args)
@@ -130,7 +146,8 @@ def main(argv=None):
     
     switcher = {
         None: run_demo,
-        'term': run_demo
+        'term': run_demo,
+        'gtk': run_demo_gtk
     }
     func = switcher.get(opts_hash.ifc, lambda x, y, z:
         print('Invalid interface: {0}'.format(opts_hash.ifc)))
