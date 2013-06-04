@@ -78,6 +78,30 @@ def run_demo_gtk(name, rsrc_path=None):
     uicontroller.view1.widgets['textview1'].get_buffer().set_text(pretext)
     hello_controller.Gtk.main()
 
+def run_demo_qt(name, rsrc_path=None, use_qtquick=False):
+    import re
+    from datetime import datetime
+
+    rexp = re.compile('(^quit$)', re.I)
+    #os.environ['QT_MAJOR_VERSION'] = 'LATEST'
+    if use_qtquick:
+      from userifc_py.qt.hello_quickcontroller import (HelloController, 
+          QApplication, userifc_version)
+    else:
+      from userifc_py.qt.hello_controller import (HelloController, 
+          QApplication, userifc_version)
+
+    pretext = '{0}\n{1} match: {2} to {3}\n{4}\n'.format(
+      userifc_version(), 'Good' if rexp.match(name)
+      else 'Does not', name, rexp.pattern, datetime.now().strftime('%c'))
+    app = QApplication([])
+    uicontroller = HelloController('greet.txt', __name__)
+    if use_qtquick:
+      uicontroller.view1.widgets['textview1'].setProperty('text', pretext)
+    else:
+      uicontroller.view1.widgets['textview1'].setPlainText(pretext)
+    app.exec_()
+
 def parse_cmdopts(args=None):
     func_name = inspect.stack()[0][3]
     MODULE_LOGGER.info(func_name + '()')
@@ -93,7 +117,7 @@ def parse_cmdopts(args=None):
     opts_parser.add_argument('-u', '--user', action = 'store', type = str,
         default = 'World', help = 'set name')
     opts_parser.add_argument('-i', '--ifc', action = 'store', type = str,
-        default = None, choices = [None, 'term', 'gtk'],
+        default = None, choices = [None, 'term', 'gtk', 'qt', 'qtquick'],
         dest = 'ifc', help = 'Set user interface')
 
     return opts_parser.parse_args(args)
@@ -147,7 +171,10 @@ def main(argv=None):
     switcher = {
         None: run_demo,
         'term': run_demo,
-        'gtk': run_demo_gtk
+        'gtk': run_demo_gtk,
+        'qt': run_demo_qt,
+        'qtquick': lambda u, rsrc_path: run_demo_qt(u, rsrc_path,
+            use_qtquick=True)
     }
     func = switcher.get(opts_hash.ifc, lambda x, y, z:
         print('Invalid interface: {0}'.format(opts_hash.ifc)))
