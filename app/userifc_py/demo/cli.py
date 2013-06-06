@@ -102,6 +102,21 @@ def run_demo_qt(name, rsrc_path=None, use_qtquick=False):
       uicontroller.view1.widgets['textview1'].setPlainText(pretext)
     app.exec_()
 
+def run_demo_curses(name, rsrc_path=None):
+    import re
+    from datetime import datetime
+
+    rexp = re.compile('(^quit$)', re.I)
+    import curses
+    from userifc_py.curses import hello_controller
+
+    pretext = '{0}\n{1} match: {2} to {3}\n{4}\n'.format(
+      hello_controller.userifc_version(), 'Good' if rexp.match(name)
+      else 'Does not', name, rexp.pattern, datetime.now().strftime('%c'))
+    uicontroller = hello_controller.HelloController('greet.txt', __name__)
+    uicontroller.view1.stdscr.addstr(1, 1, pretext, curses.A_REVERSE)
+    uicontroller.run()
+
 def parse_cmdopts(args=None):
     func_name = inspect.stack()[0][3]
     MODULE_LOGGER.info(func_name + '()')
@@ -117,7 +132,8 @@ def parse_cmdopts(args=None):
     opts_parser.add_argument('-u', '--user', action = 'store', type = str,
         default = 'World', help = 'set name')
     opts_parser.add_argument('-i', '--ifc', action = 'store', type = str,
-        default = None, choices = [None, 'term', 'gtk', 'qt', 'qtquick'],
+        default = None, choices = [None, 'term', 'gtk', 'qt', 'qtquick',
+        'curses'],
         dest = 'ifc', help = 'Set user interface')
 
     return opts_parser.parse_args(args)
@@ -174,7 +190,8 @@ def main(argv=None):
         'gtk': run_demo_gtk,
         'qt': run_demo_qt,
         'qtquick': lambda u, rsrc_path: run_demo_qt(u, rsrc_path,
-            use_qtquick=True)
+            use_qtquick=True),
+        'curses': run_demo_curses
     }
     func = switcher.get(opts_hash.ifc, lambda x, y, z:
         print('Invalid interface: {0}'.format(opts_hash.ifc)))

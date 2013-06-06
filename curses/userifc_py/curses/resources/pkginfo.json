@@ -1,7 +1,7 @@
 {
-    "name": "userifc_py.demo",
+    "name": "userifc_py.curses",
     "version": "0.1.0",
-    "description": "Main app sub-package for Python User interface examples project.",
+    "description": "Curses sub-package for Python User interface examples project.",
     "long_description_content_type": "text/x-rst",
     "url": "https://bitbucket.org/thebridge0491/userifc_py",
     "author": "thebridge0491",
@@ -10,14 +10,13 @@
     "maintainer_email": "",
     "license": "Apache-2.0",
     "download_url": "https://bitbucket.org/thebridge0491/userifc_py/archive/master.zip",
-    "keywords": ["demo", "development", "demo"],
+    "keywords": ["demo", "development", "curses"],
     "platforms": ["any"],
     "setup_requires": ["wheel", "future"
     ],
     "tests_require": [
     ],
-    "install_requires": ["future", "intro-py.util", "userifc-py.gtk"
-        , "userifc-py.qt", "userifc-py.curses"
+    "install_requires": ["future", "intro-py.util"
     ],
     "extras_require": {
         ":python_version=='2.6'": ["argparse"],
@@ -28,10 +27,5 @@
     "include_package_data": true,
     "scripts": [
     ],
-    "entry_points": {
-        "console_scripts": [
-            "userifc_py = userifc_py.demo.cli:main",
-            "main = userifc_py.demo.cli:main"
-        ]
-    }
+    "entry_points": {}
 }
