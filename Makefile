@@ -8,7 +8,7 @@ PYTHON = python
 
 parent = userifc_py
 version = 0.1.0
-SUBDIRS = aux gtk qt curses app
+SUBDIRS = aux gtk qt curses tcltk app
 
 .PHONY: build help clean test develop install
 help: $(SUBDIRS)

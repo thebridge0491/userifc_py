@@ -117,6 +117,26 @@ def run_demo_curses(name, rsrc_path=None):
     uicontroller.view1.stdscr.addstr(1, 1, pretext, curses.A_REVERSE)
     uicontroller.run()
 
+def run_demo_tcltk(name, rsrc_path=None):
+    import re
+    from datetime import datetime
+
+    rexp = re.compile('(^quit$)', re.I)
+    import curses
+    from userifc_py.tcltk import hello_controller
+
+    pretext = '{0}\n{1} match: {2} to {3}\n{4}\n'.format(
+      hello_controller.userifc_version(), 'Good' if rexp.match(name)
+      else 'Does not', name, rexp.pattern, datetime.now().strftime('%c'))
+    app = hello_controller.tk.Tk()
+    uicontroller = hello_controller.HelloController(app, 'greet.txt',
+      __name__)
+    uicontroller.view1.widgets['textview1'].delete(1.0,
+      hello_controller.tk.END)
+    uicontroller.view1.widgets['textview1'].insert(hello_controller.tk.INSERT,
+      pretext)
+    app.mainloop()
+
 def parse_cmdopts(args=None):
     func_name = inspect.stack()[0][3]
     MODULE_LOGGER.info(func_name + '()')
@@ -133,7 +153,7 @@ def parse_cmdopts(args=None):
         default = 'World', help = 'set name')
     opts_parser.add_argument('-i', '--ifc', action = 'store', type = str,
         default = None, choices = [None, 'term', 'gtk', 'qt', 'qtquick',
-        'curses'],
+        'curses', 'tcltk'],
         dest = 'ifc', help = 'Set user interface')
 
     return opts_parser.parse_args(args)
@@ -191,7 +211,8 @@ def main(argv=None):
         'qt': run_demo_qt,
         'qtquick': lambda u, rsrc_path: run_demo_qt(u, rsrc_path,
             use_qtquick=True),
-        'curses': run_demo_curses
+        'curses': run_demo_curses,
+        'tcltk': run_demo_tcltk
     }
     func = switcher.get(opts_hash.ifc, lambda x, y, z:
         print('Invalid interface: {0}'.format(opts_hash.ifc)))
