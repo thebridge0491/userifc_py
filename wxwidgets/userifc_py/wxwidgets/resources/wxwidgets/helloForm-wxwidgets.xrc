@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns="http://www.wxwindows.org/wxxrc" version="2.3.0.1">
+  <object class="wxFrame" name="frame1">
+    <object class="wxBoxSizer" name="vbox1">
+      <orient>wxVERTICAL</orient>
+      <object class="sizeritem">
+        <object class="wxStaticText" name="label1">
+          <!--<wrap>0</wrap>-->
+          <label>label1</label>
+        </object>
+        <option>0</option>
+        <flag>wxALIGN_CENTRE</flag>
+        <border>0</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxButton" name="button1">
+          <label>button1</label>
+        </object>
+        <option>0</option>
+        <flag>wxALIGN_CENTRE</flag>
+        <border>0</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxTextCtrl" name="textview1">
+          <!--<maxlength>0</maxlength>-->
+          <size>160, 80</size>
+          <style>wxTE_MULTILINE|wxTE_WORDWRAP</style>
+        </object>
+        <option>0</option>
+        <flag>wxALIGN_CENTRE</flag>
+        <border>0</border>
+      </object>
+    </object>
+    <title>frame1</title>
+    <style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
+  </object>
+  <object class="wxDialog" name="dialog1">
+    <object class="wxBoxSizer" name="dialog_vbox1">
+      <orient>wxVERTICAL</orient>
+      <object class="sizeritem">
+        <object class="wxTextCtrl" name="entry1">
+          <!--<maxlength>0</maxlength>-->
+          <size>169, 40</size>
+          <style>wxTE_PROCESS_ENTER|wxTE_LEFT</style>
+        </object>
+        <option>0</option>
+        <flag>wxALIGN_CENTRE</flag>
+        <border>0</border>
+      </object>
+    </object>
+    <size>180, 80</size>
+    <title>dialog1</title>
+    <style>wxDEFAULT_DIALOG_STYLE</style>
+  </object>
+</resource>
