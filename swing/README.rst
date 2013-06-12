@@ -1,9 +1,9 @@
-Userifc_py.Demo
+Userifc_py.Swing
 ===========================================
 .. .rst to .html: rst2html5 foo.rst > foo.html
 ..                pandoc -s -f rst -t html5 -o foo.html foo.rst
 
-Main app sub-package for Python User interface examples project.
+Swing sub-package for Python User interface examples project.
 
 Installation
 ------------
@@ -19,8 +19,6 @@ version control repository clone:
         
         git clone https://bitbucket.org/thebridge0491/userifc_py.git
 
-cd <path> ; pip install --user -e .
-
 $FETCHCMD http://peak.telecommunity.com/dist/ez_setup.py # jython setuptools
 
 PYUSERSITE=`python -m site --user-site` ; JYUSERSITE=`jython -m site --user-site`
@@ -29,21 +27,28 @@ jython ez_setup.py -d $JYUSERSITE setuptools
 
 cd <path> ; [JYTHONPATH="$PYUSERSITE"] jython setup.py develop -d $JYUSERSITE
 
-python setup.py test
+[JYTHONPATH="$PYUSERSITE"] jython -m unittest discover .
 
 Usage
 -----
-        [env RSRC_PATH=<path>/resources] [p|j]ython -m userifc_py.demo
+        [JYTHONPATH="$PYUSERSITE"] jython -i userifc_py/swing/hello_model.py
+
+        >>> lib_main([])
 
 or
-        [env RSRC_PATH=<path>/resources] [p|j]ython userifc_py/demo/cli.py
+        [JYTHONPATH="$PYUSERSITE"] jython
 
-or
-        [env RSRC_PATH=<path>/resources] [p|j]ython
-    
-        >>> from userifc_py.demo import cli
-    
-        >>> cli.main([])
+        >>> from userifc_py.swing import hello_model, hello_formview
+
+        >>> mod = hello_model.HelloModel('greet.txt')
+        
+        >>> view1 = hello_formview.HelloView()
+
+        >>> mod.attachObserver(view1)
+        
+        >>> mod.notifyObservers('To be set -- HELP.')
+
+        >>> print('view1.data:', view1.data)
 
 Author/Copyright
 ----------------

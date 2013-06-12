@@ -152,6 +152,22 @@ def run_demo_wxwidgets(name, rsrc_path=None):
     uicontroller.view1.widgets['textview1'].SetValue(pretext)
     uicontroller.app.MainLoop()
 
+def run_demo_swing(name, rsrc_path=None):
+    import re
+    from datetime import datetime
+
+    rexp = re.compile('(^quit$)', re.I)
+    from userifc_py.swing import hello_controller
+    #from java.awt import EventQueue
+
+    pretext = '{0}\n{1} match: {2} to {3}\n{4}\n'.format(
+      hello_controller.userifc_version(), 'Good' if rexp.match(name)
+      else 'Does not', name, rexp.pattern, datetime.now().strftime('%c'))
+    #EventQueue.invokeLater(hello_controller.App(pretext, 'greet.txt',
+    #  __name__))
+    uicontroller = hello_controller.HelloController('greet.txt', __name__)
+    uicontroller.view1.widgets['textview1'].text = pretext
+
 def parse_cmdopts(args=None):
     func_name = inspect.stack()[0][3]
     MODULE_LOGGER.info(func_name + '()')
@@ -168,7 +184,7 @@ def parse_cmdopts(args=None):
         default = 'World', help = 'set name')
     opts_parser.add_argument('-i', '--ifc', action = 'store', type = str,
         default = None, choices = [None, 'term', 'gtk', 'qt', 'qtquick',
-        'curses', 'tcltk', 'wxwidgets'],
+        'curses', 'tcltk', 'wxwidgets', 'swing'],
         dest = 'ifc', help = 'Set user interface')
 
     return opts_parser.parse_args(args)
@@ -228,7 +244,8 @@ def main(argv=None):
             use_qtquick=True),
         'curses': run_demo_curses,
         'tcltk': run_demo_tcltk,
-        'wxwidgets': run_demo_wxwidgets
+        'wxwidgets': run_demo_wxwidgets,
+        'swing': run_demo_swing
     }
     func = switcher.get(opts_hash.ifc, lambda x, y, z:
         print('Invalid interface: {0}'.format(opts_hash.ifc)))

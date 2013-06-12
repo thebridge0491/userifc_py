@@ -23,9 +23,11 @@ cd <path> ; pip install --user -e .
 
 $FETCHCMD http://peak.telecommunity.com/dist/ez_setup.py # jython setuptools
 
-jython ez_setup.py
+PYUSERSITE=`python -m site --user-site` ; JYUSERSITE=`jython -m site --user-site`
 
-cd <path> ; jython setup.py develop -d $HOME/.local/bin/Lib/site-packages
+jython ez_setup.py -d $JYUSERSITE setuptools
+
+cd <path> ; [JYTHONPATH="$PYUSERSITE"] jython setup.py develop -d $JYUSERSITE
 
 python setup.py test
 

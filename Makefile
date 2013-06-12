@@ -8,7 +8,7 @@ PYTHON = python
 
 parent = userifc_py
 version = 0.1.0
-SUBDIRS = aux gtk qt curses tcltk wxwidgets app
+SUBDIRS = aux gtk qt curses tcltk wxwidgets swing app
 
 .PHONY: build help clean test develop install
 help: $(SUBDIRS)
