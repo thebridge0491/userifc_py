@@ -168,6 +168,37 @@ def run_demo_swing(name, rsrc_path=None):
     uicontroller = hello_controller.HelloController('greet.txt', __name__)
     uicontroller.view1.widgets['textview1'].text = pretext
 
+if 'java' in sys.platform.lower():
+    from userifc_py.javafx import hello_controller
+    from javafx.scene import Scene
+    from javafx.application import Application
+    
+    class JfxApp(Application):
+      def start(self, stagePrime):
+        params = self.getParameters()
+        param0 = params.getRaw()[0] if 0 < len(params.getRaw()) else ''
+        
+        uicontroller = hello_controller.HelloController(stagePrime,
+          'greet.txt', 'userifc_py.javafx')
+        uicontroller.view1.widgets['textview1'].text = \
+          params.getNamed()['pretext']
+        stagePrime.setScene(Scene(uicontroller.view1.parent, 200, 160))
+        stagePrime.show()
+
+def run_demo_javafx(name, rsrc_path=None):
+    import re
+    from datetime import datetime
+
+    rexp = re.compile('(^quit$)', re.I)
+    #from userifc_py.javafx import hello_controller
+
+    pretext = '{0}\n{1} match: {2} to {3}\n{4}\n'.format(
+      hello_controller.userifc_version(), 'Good' if rexp.match(name)
+      else 'Does not', name, rexp.pattern, datetime.now().strftime('%c'))
+    
+    #JfxApp.launch(JfxApp, ['--pretext=' + pretext])
+    Application.launch(JfxApp, ['--pretext=' + pretext])
+
 def parse_cmdopts(args=None):
     func_name = inspect.stack()[0][3]
     MODULE_LOGGER.info(func_name + '()')
@@ -184,7 +215,7 @@ def parse_cmdopts(args=None):
         default = 'World', help = 'set name')
     opts_parser.add_argument('-i', '--ifc', action = 'store', type = str,
         default = None, choices = [None, 'term', 'gtk', 'qt', 'qtquick',
-        'curses', 'tcltk', 'wxwidgets', 'swing'],
+        'curses', 'tcltk', 'wxwidgets', 'swing', 'javafx'],
         dest = 'ifc', help = 'Set user interface')
 
     return opts_parser.parse_args(args)
@@ -245,7 +276,8 @@ def main(argv=None):
         'curses': run_demo_curses,
         'tcltk': run_demo_tcltk,
         'wxwidgets': run_demo_wxwidgets,
-        'swing': run_demo_swing
+        'swing': run_demo_swing,
+        'javafx': run_demo_javafx
     }
     func = switcher.get(opts_hash.ifc, lambda x, y, z:
         print('Invalid interface: {0}'.format(opts_hash.ifc)))
