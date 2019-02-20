@@ -27,16 +27,18 @@ jython ez_setup.py -d $JYUSERSITE setuptools
 
 cd <path> ; [JYTHONPATH="$PYUSERSITE"] jython setup.py develop -d $JYUSERSITE
 
-[JYTHONPATH="$PYUSERSITE"] jython -m unittest discover .
+MOD_OPTS="--module-path=$JAVAFX_HOME/lib --add-modules=javafx.controls,javafx.fxml"
+
+[JYTHONPATH="$PYUSERSITE"] JAVA_OPTS="$JAVA_OPTS $MOD_OPTS" jython -m unittest discover .
 
 Usage
 -----
-        [JYTHONPATH="$PYUSERSITE"] jython -i userifc_py/javafx/hello_model.py
+        [JYTHONPATH="$PYUSERSITE"] JAVA_OPTS="$JAVA_OPTS $MOD_OPTS" jython -i userifc_py/javafx/hello_model.py
 
         >>> lib_main([])
 
 or
-        [JYTHONPATH="$PYUSERSITE"] jython
+        [JYTHONPATH="$PYUSERSITE"] JAVA_OPTS="$JAVA_OPTS $MOD_OPTS" jython
         
         >>> from javafx.scene import Scene
         
